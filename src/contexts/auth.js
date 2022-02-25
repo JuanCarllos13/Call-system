@@ -11,7 +11,7 @@ function AuthProvider({children}){
     const [loading, setloading] = useState(true)
 
 
-    useEffect(()=>{
+    useEffect(()=>{ // Recusando usuario caso não tenha cadastrado
 
         function loadStorage(){
             const storageUSer = localStorage.getItem('SistemaUser')
@@ -27,11 +27,78 @@ function AuthProvider({children}){
     }, [])
 
 
- 
+    // Fazendo login de usuario
+    async function signIn(email, password){
+        setloadingAuth(true)
+
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+        .then( async (value)=>{
+            let uid = value.user.uid
+
+            const userProfile = await firebase.firestore().collection('users')
+            .doc(uid).get()
+
+            let data ={
+                uid: uid,
+                nome: userProfile.data().nome,
+                avatarUrl: userProfile.data().avatarUrl,
+                email: value.user.email
+            }
+            setUser(data)
+            storageUSer(data)
+            setloadingAuth(false)
+              
+        })
+        .catch((error)=>{
+            console.log(error)
+            setloadingAuth(false)
+        })
+         
+    }
+
+    async function SignUp(email, password, nome){ //Cadastrando usuario no banco de dados
+        setloadingAuth(true);
+        await firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(async(value)=>{
+            let uid = value.user.uid
+
+            await firebase.firestore().collection('users')
+            .doc(uid).set({
+                nome: nome,
+                avatarUrl: null,
+            })
+            .then(()=>{  // Caso o cadastrado esteja certo vai cair aqui
+                let data = {
+                    uid: uid,
+                    nome: nome,
+                    email: value.user.email,
+                    avatarUrl: null
+                }
+                setUser(data)
+                storageUSer(data)
+                setloadingAuth(false)
+            })
+            .catch((error) =>{
+                console.log(error)
+                setloadingAuth(false)
+            })
+        })
+    }
+
+    function storageUSer(data){ // Salvando no localStorage
+        localStorage.setItem('sistemaUser', JSON.stringify(data))
+    }
+
+
+    async function SignOut(){ //Removendo o usuario do localStorage pra que ele saia do pagina principal
+        await firebase.auth().signOut()
+        localStorage.removeItem('sistemaUser')
+        setUser(null)  // Voltando ao estado principal para que seja possivel sair da aplicação
+    }
 
     
     return(
-        <AuthContext.Provider value={{signed: !!user, user, loading}}>   
+        <AuthContext.Provider value={{signed: !!user, user, loading, SignUp, SignOut,signIn  }}>   
         {/* Trasnfromando o user em boolean */}
             {children}
         </AuthContext.Provider>
