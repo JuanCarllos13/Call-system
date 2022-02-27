@@ -7,11 +7,10 @@ import { Container, Login, LogoArea } from './styles'
 function SignIn() {
   const [email, setEmail] = useState('')
   const [passoword, setPassword] = useState('')
-  const { signIn } = useContext(AuthContext)
+  const { signIn, loadingAuth } = useContext(AuthContext)
 
   function HandleSubmit(e){
     e.preventDefault() // Não atualizar a página
-   
     if(email !== '' && passoword !== ''){
         signIn(email, passoword)
     }
@@ -27,7 +26,7 @@ function SignIn() {
           <h1>Entrar</h1>
           <input type={'text'} placeholder={"email@email.com"} value={email} onChange={(e) => setEmail(e.target.value)} />
           <input type={'password'} placeholder={"**********"} value={passoword} onChange={(e) => setPassword(e.target.value)} />
-          <button type={'submit'} >Acessar</button>
+          <button type={'submit'} > {loadingAuth ? 'Carregando...': 'Acessar'} </button>
         </form>
 
         <Link to={'/register'} >Criar uma conta</Link>
