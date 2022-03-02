@@ -15,7 +15,7 @@ function Header() {
                 <img src={user.avatarUrl === null ? Avatar : user.avatarUrl} alt={"Foto do Perfil"} />
             </div>
 
-            <Link to={'/dashborad'}> 
+            <Link to={'/dashboard'}> 
             <FiHome color="#FFF" size={24} /> 
             chamados
             </Link>
