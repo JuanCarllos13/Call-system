@@ -15,7 +15,7 @@ function AuthProvider({ children }) {
     useEffect(() => { // Recusando usuario caso não tenha cadastrado
 
         function loadStorage() {
-            const storageUSer = localStorage.getItem('SistemaUser')
+            const storageUSer = localStorage.getItem('sistemaUser')
 
             if (storageUSer) {
                 setUser(JSON.parse(storageUSer))

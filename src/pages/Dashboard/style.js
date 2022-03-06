@@ -157,3 +157,15 @@ export const ContainerDashboard = styled.div`
     }
 
 `
+export const Button = styled.button`
+    margin: 1.5em 0;
+    padding: .5em 1em;
+    height:  35px;
+    border: 0;
+    border-radius: 7px;
+    background-color: #181c2e;
+    color: white;
+    font-size: 1.1em ;
+
+
+`
