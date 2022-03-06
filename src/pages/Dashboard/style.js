@@ -91,13 +91,24 @@ export const  Content = styled.div`
             letter-spacing: .1em;
             text-transform: uppercase;
         }
+        div{
+            display: inline-block;
+            text-align: center;
+
+            button{
+                background-color: rgb(53, 131, 246);
+                margin-top: 1px;
+                padding: 5px;
+                margin-right: 5px;
+            
+            }
+        }
         .action{
-            border: 0;
+            border:0;
             padding: 5px;
-            margin-right: 2px;
             align-items: center;
             display: inline-block;
-            border-radius: 5px;
+            border-radius: 4px;
         }
         svg{
             vertical-align: middle;
@@ -166,6 +177,7 @@ export const Button = styled.button`
     background-color: #181c2e;
     color: white;
     font-size: 1.1em ;
+    
 
 
 `

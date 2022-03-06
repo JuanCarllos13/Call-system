@@ -66,7 +66,7 @@ export const Row = styled.div`
          font-size: 1.2em;
          color: #121212;
          
-         a{
+         i{
              font-weight: 400;
              margin-right: 1em;
              padding: 2px 8px;

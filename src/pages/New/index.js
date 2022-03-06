@@ -6,8 +6,11 @@ import { FiPlus } from 'react-icons//fi'
 import { AuthContext } from '../../contexts/auth'
 import firebase from "../../services/firebaseConnection";
 import {toast} from 'react-toastify'
+import {useHistory, useParams} from 'react-router-dom'
 
 function New() {
+    const {id} = useParams()
+    const history = useHistory()
     const [customers, setCustomers] = useState([])
     const [loadCustmers, setLoadCustmers] = useState([])
     const [customersSelected, setCustomersSelected] = useState(0)
@@ -15,9 +18,34 @@ function New() {
     const [status, setStatus] = useState('Aberto')
     const [Complemento, setComplemento] = useState('')
     const { user } = useContext(AuthContext)
+    const [idCustomer, setIdCustomer] = useState(false)
 
    async function handleRegister(e) {
         e.preventDefault();
+
+        if(idCustomer){
+            await firebase.firestore().collection('chamados')
+            .doc(id)
+            .update({
+                cliente: customers[customersSelected].nomeFantasia,
+                clienteId: customers[customersSelected].id,
+                assunto: assunto,
+                status: status,
+                complemento: Complemento,
+                userId: user.uid
+            })
+            .then(()=>{
+                toast.success("Chamado alterado com sucesso")
+                setCustomersSelected(0)
+                setComplemento('')
+                history.push('/dashboard')
+            })
+            .catch((erro)=>{
+                toast.error("Erro ao registrar")
+                console.log(erro)
+            })
+            return
+        }
         
         await firebase.firestore().collection('chamados')
         .add({
@@ -61,6 +89,11 @@ function New() {
                     }
                     setCustomers(lista)
                     setLoadCustmers(false)
+
+                    if(id){
+                        loadId(lista)
+                    }
+
                 })
                 .catch((error) => {
                     console.log("Deu algum erro", error)
@@ -69,7 +102,29 @@ function New() {
                 })
         }
         loadCustmers()
+
+
+
     }, [])
+
+    async function loadId(lista){
+        await firebase.firestore().collection('chamados').doc(id)
+        .get()
+        .then((snapshot)=>{
+            setAssunto(snapshot.data().assunto)
+            setStatus(snapshot.data().status)
+            setComplemento(snapshot.data().complemento)
+
+
+            let index = lista.findIndex(item => item.id === snapshot.data().clienteId)
+            setCustomersSelected(index)
+            setIdCustomer(true)
+        })
+        .catch((erro)=>{
+            console.log("Erro no id passado", erro)
+            setIdCustomer(false)
+        })
+    }
 
 
     function handleChangeSelect(e) { // Quando o valor e trocado do campo assunto

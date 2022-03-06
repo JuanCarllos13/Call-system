@@ -16,22 +16,22 @@ function Modal({conteudo, close}) {
                     <h2>Detalhes do chamado</h2>
                     <Row>
                         <span>
-                            Cliente: <a>{conteudo.cliente}</a>
+                            Cliente: <i>{conteudo.cliente}</i>
                         </span>
                     </Row>
 
                     <Row>
                         <span>
-                            Assunto: <a>{conteudo.assunto}</a>
+                            Assunto: <i>{conteudo.assunto}</i>
                         </span>
                         <span>
-                            Cadastrado em: <a>{conteudo.createdFormat}</a>
+                            Cadastrado em: <i>{conteudo.createdFormat}</i>
                         </span>
                     </Row>
 
                     <Row>
                         <span>
-                            Status: <a style={{ color: '#FFF', backgroundColor: conteudo.status === "Aberto" ? "#5cb85c" : "#999" }}> {conteudo.status} </a>
+                            Status: <i style={{ color: '#FFF', backgroundColor: conteudo.status === "Aberto" ? "#5cb85c" : "#999" }}> {conteudo.status} </i>
                         </span>
                     </Row>
 
